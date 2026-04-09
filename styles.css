@@ -182,3 +182,100 @@ a {
     grid-template-columns: 1fr;
   }
 }
+
+/* auth page layout */
+.auth-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 24px;
+}
+
+/* auth card keeps forms in one clean panel */
+.auth-card {
+  width: min(560px, 100%);
+}
+
+.auth-title {
+  margin-bottom: 10px;
+}
+
+.auth-text {
+  margin-bottom: 24px;
+}
+
+.auth-form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-group {
+  display: grid;
+  gap: 8px;
+}
+
+/* label styling for forms */
+.form-label {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* input style stays in the same dark jade theme */
+.form-input {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #0e1714;
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--jade);
+  box-shadow: 0 0 0 3px rgba(40, 196, 143, 0.14);
+}
+
+/* validation message under each field */
+.form-error {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.92rem;
+}
+
+/* message boxes for general success or failure */
+.message-box {
+  margin-bottom: 18px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid transparent;
+}
+
+.error-box {
+  background: rgba(255, 123, 123, 0.08);
+  border-color: rgba(255, 123, 123, 0.25);
+  color: #ffd2d2;
+}
+
+.success-box {
+  background: rgba(40, 196, 143, 0.08);
+  border-color: rgba(40, 196, 143, 0.25);
+  color: var(--jade-soft);
+}
+
+.auth-button {
+  margin-top: 4px;
+  border: none;
+  cursor: pointer;
+}
+
+.auth-switch {
+  margin-top: 18px;
+  color: var(--muted);
+}
+
+.inline-link {
+  color: var(--jade-soft);
+  font-weight: 700;
+}
