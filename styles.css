@@ -1,0 +1,184 @@
+/* Root variables (color theme for the entire app) */
+:root {
+  --bg-main: #0b1210;
+  --bg-soft: #101a16;
+  --panel: #13211c;
+  --panel-2: #182923;
+  --line: #234238;
+  --text: #e7fff6;
+  --muted: #9ec7b7;
+
+  /* Jade green accent colors */
+  --jade: #28c48f;
+  --jade-dark: #1c8f68;
+  --jade-soft: #8ef0cb;
+
+  --danger: #ff7b7b;
+  --shadow: rgba(0, 0, 0, 0.28);
+}
+
+/* Base styles and reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* Dark gradient background with subtle glow effect */
+  background:
+    radial-gradient(circle at top left, rgba(40, 196, 143, 0.12), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(142, 240, 203, 0.08), transparent 25%),
+    linear-gradient(180deg, #09100e 0%, #0d1512 100%);
+
+  color: var(--text);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Main page container */
+.page-shell {
+  width: min(1150px, 92%);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+/* Header and navigation */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Logo badge styling */
+.brand-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  font-weight: bold;
+  background: linear-gradient(135deg, var(--jade), var(--jade-dark));
+  color: #08110e;
+}
+
+.site-title {
+  margin: 0;
+}
+
+.site-subtitle {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+/* Navigation links */
+.top-nav {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-link {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+}
+
+.nav-link:hover {
+  border-color: var(--jade);
+  color: var(--text);
+}
+
+/* Main layout grid */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
+/* Card styling used throughout the app */
+.glow-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+.hero-title {
+  font-size: 2rem;
+}
+
+.hero-text {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Buttons */
+.btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+/* Primary button (main action) */
+.btn-primary {
+  background: var(--jade);
+  color: #08110e;
+}
+
+/* Secondary button (outline style) */
+.btn-secondary {
+  border: 1px solid var(--line);
+}
+
+/* Status panels (user + session info) */
+.status-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.mini-panel {
+  background: var(--panel-2);
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.mini-label {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.mini-value {
+  font-weight: bold;
+}
+
+/* Feature list styling */
+.feature-list {
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 800px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-row {
+    grid-template-columns: 1fr;
+  }
+}
