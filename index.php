@@ -2,7 +2,6 @@
 // Include shared setup (session + helper functions)
 require_once __DIR__ . '/includes/bootstrap.php';
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,8 +40,11 @@ require_once __DIR__ . '/includes/bootstrap.php';
     <!-- Main content -->
     <main class="hero-grid">
 
-      <!-- Left side: main info -->
+      <!-- Left side: main intro card -->
       <section class="hero-card glow-card">
+
+        <!-- Small intro text above the title so the card feels less empty at the top -->
+        <p class="eyebrow">Solo Project • CSC 4370</p>
 
         <h2 class="hero-title">Test your knowledge with NeuroCheck</h2>
 
@@ -51,7 +53,7 @@ require_once __DIR__ . '/includes/bootstrap.php';
           PHP handles all logic including sessions, scoring, and leaderboard tracking.
         </p>
 
-        <!-- Action buttons -->
+        <!-- Main action buttons -->
         <div class="hero-actions">
           <a href="register.php" class="btn btn-primary">Create Account</a>
           <a href="login.php" class="btn btn-secondary">Login</a>
@@ -66,7 +68,7 @@ require_once __DIR__ . '/includes/bootstrap.php';
             <span class="mini-value">
               <?php
               // If user is logged in, display username
-              // Otherwise show "Guest"
+              // Otherwise just show Guest
               echo isset($_SESSION['user']) ? e($_SESSION['user']) : 'Guest';
               ?>
             </span>
@@ -77,20 +79,18 @@ require_once __DIR__ . '/includes/bootstrap.php';
             <span class="mini-label">Session Status</span>
             <span class="mini-value">
               <?php
-              // Check if PHP session is active
+              // Session should already be active because bootstrap starts it
               echo session_status() === PHP_SESSION_ACTIVE ? 'Active' : 'Inactive';
               ?>
             </span>
           </div>
 
         </div>
-
       </section>
 
-      <!-- Right side: feature list -->
+      <!-- Right side: feature summary -->
       <aside class="info-card glow-card">
-
-        <h3>Features</h3>
+        <h3 class="info-title">Features</h3>
 
         <ul class="feature-list">
           <li>User login and registration</li>
@@ -98,7 +98,6 @@ require_once __DIR__ . '/includes/bootstrap.php';
           <li>Quiz scoring system</li>
           <li>Leaderboard display</li>
         </ul>
-
       </aside>
 
     </main>

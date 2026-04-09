@@ -45,7 +45,7 @@ a {
 .page-shell {
   width: min(1150px, 92%);
   margin: 0 auto;
-  padding: 24px 0 40px;
+  padding: 32px 0 48px;
 }
 
 /* Header and navigation */
@@ -54,7 +54,8 @@ a {
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  margin-bottom: 28px;
+  gap: 18px;
+  margin-bottom: 34px;
 }
 
 .brand-wrap {
@@ -73,21 +74,25 @@ a {
   font-weight: bold;
   background: linear-gradient(135deg, var(--jade), var(--jade-dark));
   color: #08110e;
+  box-shadow: 0 10px 24px rgba(40, 196, 143, 0.22);
 }
 
 .site-title {
   margin: 0;
+  font-size: 2rem;
 }
 
 .site-subtitle {
   margin: 4px 0 0;
   color: var(--muted);
+  font-size: 0.96rem;
 }
 
 /* Navigation links */
 .top-nav {
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .nav-link {
@@ -95,18 +100,47 @@ a {
   border: 1px solid var(--line);
   border-radius: 999px;
   color: var(--muted);
+  background: rgba(19, 33, 28, 0.75);
+  transition: 0.2s ease;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
   border-color: var(--jade);
   color: var(--text);
+  box-shadow: 0 0 0 1px rgba(40, 196, 143, 0.18);
 }
 
 /* Main layout grid */
 .hero-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 20px;
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+  gap: 28px;
+  align-items: stretch;
+}
+
+/* Small text above the main homepage title */
+.eyebrow {
+  margin: 0 0 12px;
+  color: var(--jade-soft);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* Keep the homepage cards balanced so one side doesn't feel squished */
+.hero-card,
+.info-card {
+  height: 100%;
+  min-height: 320px;
+}
+
+/* The left hero card needed a little better vertical structure */
+.hero-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* Card styling used throughout the app */
@@ -114,22 +148,31 @@ a {
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 20px;
-  padding: 24px;
+  padding: 32px;
+  box-shadow: 0 14px 34px var(--shadow);
 }
 
 .hero-title {
-  font-size: 2rem;
+  font-size: 2.2rem;
+  line-height: 1.15;
+  margin: 0 0 18px;
 }
 
 .hero-text {
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.7;
+  margin: 0 0 28px;
+  max-width: 700px;
 }
 
 /* Buttons */
 .btn {
-  padding: 10px 16px;
-  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 140px;
+  padding: 12px 18px;
+  border-radius: 12px;
   font-weight: bold;
 }
 
@@ -144,43 +187,57 @@ a {
   border: 1px solid var(--line);
 }
 
+/* Give the buttons their own breathing room above the status panels */
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
 /* Status panels (user + session info) */
 .status-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 10px;
 }
 
 .mini-panel {
   background: var(--panel-2);
-  padding: 12px;
-  border-radius: 10px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .mini-label {
+  display: block;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.82rem;
+  margin-bottom: 6px;
 }
 
 .mini-value {
   font-weight: bold;
+  font-size: 1rem;
 }
 
 /* Feature list styling */
-.feature-list {
-  color: var(--muted);
-  line-height: 1.8;
+.info-title,
+.info-card h3 {
+  margin: 4px 0 18px;
+  font-size: 1.5rem;
 }
 
-/* Responsive layout for smaller screens */
-@media (max-width: 800px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
+.feature-list {
+  margin: 0;
+  padding-left: 22px;
+  color: var(--muted);
+  line-height: 2;
+}
 
-  .status-row {
-    grid-template-columns: 1fr;
-  }
+.feature-list li {
+  margin-bottom: 6px;
 }
 
 /* auth page layout */
@@ -278,4 +335,39 @@ a {
 .inline-link {
   color: var(--jade-soft);
   font-weight: 700;
+}
+
+/* Responsive layout for tablets and smaller laptops */
+@media (max-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive layout for phones */
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 24px 0 36px;
+  }
+
+  .glow-card {
+    padding: 24px;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .status-row {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
 }
