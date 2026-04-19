@@ -26,7 +26,7 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
 
-  /* Dark gradient background with subtle glow effect */
+  /* keeping the base dark gradient, but now letting the animated layers sit on top */
   background:
     radial-gradient(circle at top left, rgba(40, 196, 143, 0.12), transparent 30%),
     radial-gradient(circle at bottom right, rgba(142, 240, 203, 0.08), transparent 25%),
@@ -34,11 +34,169 @@ body {
 
   color: var(--text);
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+/* this floating glow layer gives the whole site more life without being too distracting */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -120px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(40, 196, 143, 0.12), transparent 22%),
+    radial-gradient(circle at 80% 25%, rgba(142, 240, 203, 0.09), transparent 18%),
+    radial-gradient(circle at 35% 75%, rgba(40, 196, 143, 0.08), transparent 20%),
+    radial-gradient(circle at 75% 80%, rgba(28, 143, 104, 0.10), transparent 24%);
+  filter: blur(30px);
+  animation: backgroundFloat 18s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* adding one more slow moving layer helps the background feel more dynamic */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -160px;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(142, 240, 203, 0.05), transparent 18%),
+    radial-gradient(circle at 60% 70%, rgba(40, 196, 143, 0.07), transparent 20%),
+    radial-gradient(circle at 15% 60%, rgba(28, 143, 104, 0.07), transparent 18%);
+  filter: blur(50px);
+  animation: backgroundPulse 14s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* this layer holds the visible neural lightning flashes behind the content */
+body .neuro-lightning {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  mix-blend-mode: screen;
+}
+
+/* each bolt is now brighter, wider, and taller so it actually reads on the page */
+.neuro-bolt {
+  position: absolute;
+  width: 5px;
+  height: 220px;
+  opacity: 0;
+  transform: rotate(28deg) scaleY(0.35);
+  transform-origin: center;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(0, 255, 170, 0.98) 20%,
+      rgba(142, 240, 203, 1) 45%,
+      rgba(255, 255, 255, 0.95) 52%,
+      rgba(0, 255, 170, 0.95) 72%,
+      transparent 100%);
+  filter:
+    blur(0.8px) drop-shadow(0 0 10px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 22px rgba(142, 240, 203, 0.55));
+  animation: neuroFlash 4.2s infinite ease-in-out;
+}
+
+/* small branch pieces make the strike feel less like a plain line */
+.neuro-bolt::before,
+.neuro-bolt::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  height: 78px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(142, 240, 203, 0.95) 35%,
+      rgba(255, 255, 255, 0.88) 50%,
+      rgba(0, 255, 170, 0.85) 70%,
+      transparent 100%);
+  filter:
+    blur(0.6px) drop-shadow(0 0 8px rgba(0, 255, 170, 0.65));
+}
+
+.neuro-bolt::before {
+  top: 42px;
+  left: -16px;
+  transform: rotate(-34deg);
+}
+
+.neuro-bolt::after {
+  top: 108px;
+  right: -16px;
+  transform: rotate(34deg);
+}
+
+/* spreading the bolts around the screen with different timings so it feels organic */
+.neuro-bolt:nth-child(1) {
+  left: 14%;
+  top: 10%;
+  animation-delay: 0s;
+}
+
+.neuro-bolt:nth-child(2) {
+  left: 72%;
+  top: 16%;
+  animation-delay: 1.2s;
+}
+
+.neuro-bolt:nth-child(3) {
+  left: 34%;
+  top: 63%;
+  animation-delay: 2.6s;
+}
+
+.neuro-bolt:nth-child(4) {
+  left: 84%;
+  top: 58%;
+  animation-delay: 3.5s;
+}
+
+/* this flicker makes the bolt hit hard for a moment, then disappear */
+@keyframes neuroFlash {
+  0% {
+    opacity: 0;
+    transform: rotate(28deg) scaleY(0.3);
+  }
+
+  4% {
+    opacity: 1;
+    transform: rotate(28deg) scaleY(1.12);
+  }
+
+  7% {
+    opacity: 0.35;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  14% {
+    opacity: 0.25;
+  }
+
+  18% {
+    opacity: 0.92;
+  }
+
+  24% {
+    opacity: 0;
+    transform: rotate(28deg) scaleY(1.25);
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* making sure the actual site content stays above the animated background */
+.page-shell {
+  position: relative;
+  z-index: 1;
 }
 
 /* Main page container */
@@ -46,6 +204,11 @@ a {
   width: min(1150px, 92%);
   margin: 0 auto;
   padding: 32px 0 48px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
 /* Header and navigation */
@@ -321,10 +484,13 @@ a {
   color: var(--jade-soft);
 }
 
+/* keep auth buttons looking full and centered inside the form */
 .auth-button {
   margin-top: 4px;
   border: none;
   cursor: pointer;
+  width: 100%;
+  justify-content: center;
 }
 
 .auth-switch {
@@ -335,47 +501,6 @@ a {
 .inline-link {
   color: var(--jade-soft);
   font-weight: 700;
-}
-
-/* Responsive layout for tablets and smaller laptops */
-@media (max-width: 900px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Responsive layout for phones */
-@media (max-width: 640px) {
-  .page-shell {
-    padding: 24px 0 36px;
-  }
-
-  .glow-card {
-    padding: 24px;
-  }
-
-  .hero-title {
-    font-size: 1.9rem;
-  }
-
-  .status-row {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .btn {
-    width: 100%;
-  }
-}
-
-/* keep auth buttons looking full and centered inside the form */
-.auth-button {
-  width: 100%;
-  justify-content: center;
 }
 
 /* dashboard layout */
@@ -423,168 +548,6 @@ a {
   line-height: 1.6;
 }
 
-/* dashboard stacks nicely on smaller screens too */
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .dashboard-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
-/* auth page layout */
-.auth-layout {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding-top: 24px;
-}
-
-/* auth card keeps forms in one clean panel */
-.auth-card {
-  width: min(560px, 100%);
-}
-
-.auth-title {
-  margin-bottom: 10px;
-}
-
-.auth-text {
-  margin-bottom: 24px;
-}
-
-.auth-form {
-  display: grid;
-  gap: 16px;
-}
-
-.form-group {
-  display: grid;
-  gap: 8px;
-}
-
-/* label styling for forms */
-.form-label {
-  font-weight: 700;
-  color: var(--text);
-}
-
-/* input style stays in the same dark jade theme */
-.form-input {
-  width: 100%;
-  padding: 13px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: #0e1714;
-  color: var(--text);
-  font-size: 1rem;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--jade);
-  box-shadow: 0 0 0 3px rgba(40, 196, 143, 0.14);
-}
-
-/* validation message under each field */
-.form-error {
-  margin: 0;
-  color: var(--danger);
-  font-size: 0.92rem;
-}
-
-/* message boxes for general success or failure */
-.message-box {
-  margin-bottom: 18px;
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid transparent;
-}
-
-.error-box {
-  background: rgba(255, 123, 123, 0.08);
-  border-color: rgba(255, 123, 123, 0.25);
-  color: #ffd2d2;
-}
-
-.success-box {
-  background: rgba(40, 196, 143, 0.08);
-  border-color: rgba(40, 196, 143, 0.25);
-  color: var(--jade-soft);
-}
-
-.auth-button {
-  margin-top: 4px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  justify-content: center;
-}
-
-.auth-switch {
-  margin-top: 18px;
-  color: var(--muted);
-}
-
-.inline-link {
-  color: var(--jade-soft);
-  font-weight: 700;
-}
-
-/* dashboard layout */
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
-  gap: 28px;
-  align-items: stretch;
-}
-
-.dashboard-card,
-.dashboard-side-card {
-  min-height: 320px;
-}
-
-.dashboard-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.dashboard-title {
-  margin-bottom: 14px;
-}
-
-.dashboard-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.dashboard-stats {
-  display: grid;
-  gap: 14px;
-}
-
-/* dashboard stacks nicely on smaller screens too */
-@media (max-width: 900px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 640px) {
-  .dashboard-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
 /* quiz page layout */
 .quiz-layout {
   display: flex;
@@ -593,15 +556,23 @@ a {
   padding-top: 18px;
 }
 
+.quiz-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
 .quiz-card {
   width: min(760px, 100%);
+  max-width: 760px;
+  padding: 30px;
 }
 
 .quiz-title {
   margin-bottom: 22px;
 }
 
-/* top summary row for quiz progress */
+/* quick status row above the answer choices */
 .quiz-top-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -615,12 +586,15 @@ a {
 }
 
 /* answer choices are shown as stacked cards */
-.choice-list {
+.choice-list,
+.quiz-options {
   display: grid;
   gap: 14px;
+  margin: 20px 0;
 }
 
-.choice-card {
+.choice-card,
+.option-card {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -632,9 +606,11 @@ a {
   transition: 0.2s ease;
 }
 
-.choice-card:hover {
+.choice-card:hover,
+.option-card:hover {
   border-color: var(--jade);
   box-shadow: 0 0 0 1px rgba(40, 196, 143, 0.16);
+  background: rgba(0, 255, 170, 0.08);
 }
 
 .choice-input {
@@ -717,19 +693,6 @@ a {
   margin-top: 24px;
 }
 
-@media (max-width: 640px) {
-
-  .quiz-top-row,
-  .result-summary {
-    grid-template-columns: 1fr;
-  }
-
-  .result-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-
 /* leaderboard page layout */
 .leaderboard-layout {
   display: flex;
@@ -791,40 +754,109 @@ a {
   margin-top: 24px;
 }
 
-/* quiz container layout */
-.quiz-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
+/* small footer used across the app */
+.site-footer {
+  margin-top: 28px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
-/* main quiz card */
-.quiz-card {
-  width: 100%;
-  max-width: 600px;
-  padding: 30px;
+/* quiz progress bar */
+.progress-block {
+  margin-bottom: 22px;
 }
 
-/* answer options grid */
-.quiz-options {
+.progress-label-row {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 12px;
-  margin: 20px 0;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
-/* each option styled like a clickable card */
-.option-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(0, 255, 170, 0.2);
-  padding: 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: 0.2s ease;
+.progress-bar-shell {
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
 }
 
-/* hover effect to match jade glow theme */
-.option-card:hover {
-  border-color: #00ffaa;
-  background: rgba(0, 255, 170, 0.1);
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--jade), var(--jade-dark));
+}
+
+/* Responsive layout for tablets and smaller laptops */
+@media (max-width: 900px) {
+
+  .hero-grid,
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive layout for phones */
+@media (max-width: 640px) {
+  .page-shell {
+    padding: 24px 0 36px;
+  }
+
+  .glow-card {
+    padding: 24px;
+  }
+
+  .hero-title {
+    font-size: 1.9rem;
+  }
+
+  .status-row,
+  .quiz-top-row,
+  .result-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-actions,
+  .dashboard-actions,
+  .result-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+
+/* slow drifting movement so the glow feels alive across the whole site */
+@keyframes backgroundFloat {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(18px, -12px, 0) scale(1.03);
+  }
+
+  100% {
+    transform: translate3d(-14px, 10px, 0) scale(1.06);
+  }
+}
+
+/* soft pulse so the background shifts a little in intensity over time */
+@keyframes backgroundPulse {
+
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
 }

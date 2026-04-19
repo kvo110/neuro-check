@@ -12,6 +12,14 @@ require_once __DIR__ . '/includes/bootstrap.php';
 </head>
 <body>
 
+  <!-- subtle neural lightning layer for the site background -->
+  <div class="neuro-lightning" aria-hidden="true">
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+  </div>
+
   <!-- Main container for layout -->
   <div class="page-shell">
 

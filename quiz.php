@@ -91,6 +91,14 @@ $progressPercent = (int) round(($questionNumber / $totalQuestions) * 100);
 </head>
 <body>
 
+  <!-- subtle neural lightning layer for the site background -->
+  <div class="neuro-lightning" aria-hidden="true">
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+    <div class="neuro-bolt"></div>
+  </div>
+
   <div class="page-shell">
     <header class="site-header">
       <div class="brand-wrap">
