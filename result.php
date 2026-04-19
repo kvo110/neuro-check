@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/includes/bootstrap.php';
+require_once __DIR__ . '/includes/leaderboard_data.php';
 requireLogin();
 
-// if there are no saved answers yet, they shouldn't be on the results page
+// if there are no saved answers yet, results page shouldn't open
 if (!isset($_SESSION['answers']) || !is_array($_SESSION['answers']) || count($_SESSION['answers']) === 0) {
   header('Location: dashboard.php');
   exit;
@@ -17,6 +17,12 @@ foreach ($answers as $answer) {
   if (!empty($answer['is_correct'])) {
     $correctCount++;
   }
+}
+
+// only save the score once per quiz attempt
+if (empty($_SESSION['result_saved'])) {
+  addLeaderboardEntry($_SESSION['user'], $score, $correctCount, $totalQuestions);
+  $_SESSION['result_saved'] = true;
 }
 ?>
 <!DOCTYPE html>
@@ -42,6 +48,7 @@ foreach ($answers as $answer) {
       <nav class="top-nav">
         <a href="index.php" class="nav-link">Home</a>
         <a href="dashboard.php" class="nav-link">Dashboard</a>
+        <a href="leaderboard.php" class="nav-link">Leaderboard</a>
         <a href="result.php" class="nav-link active">Results</a>
         <a href="logout.php" class="nav-link">Logout</a>
       </nav>
@@ -82,7 +89,7 @@ foreach ($answers as $answer) {
 
         <div class="result-actions">
           <a href="restart.php" class="btn btn-primary">Play Again</a>
-          <a href="dashboard.php" class="btn btn-secondary">Back to Dashboard</a>
+          <a href="leaderboard.php" class="btn btn-secondary">View Leaderboard</a>
         </div>
       </section>
     </main>

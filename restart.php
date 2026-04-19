@@ -6,6 +6,7 @@ requireLogin();
 $_SESSION['score'] = 0;
 $_SESSION['question_index'] = 0;
 $_SESSION['answers'] = [];
+$_SESSION['result_saved'] = false;
 
 header('Location: quiz.php');
 exit;

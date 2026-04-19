@@ -729,3 +729,64 @@ a {
     align-items: stretch;
   }
 }
+
+/* leaderboard page layout */
+.leaderboard-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 18px;
+}
+
+.leaderboard-card {
+  width: min(980px, 100%);
+}
+
+.leaderboard-title {
+  margin-bottom: 12px;
+}
+
+.leaderboard-text {
+  margin-bottom: 24px;
+}
+
+.leaderboard-table-wrap {
+  overflow-x: auto;
+}
+
+/* main leaderboard table */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel-2);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.leaderboard-table th {
+  background: rgba(40, 196, 143, 0.08);
+  color: var(--jade-soft);
+  font-size: 0.95rem;
+}
+
+.leaderboard-table td {
+  color: var(--text);
+}
+
+.leaderboard-table tbody tr:hover {
+  background: rgba(40, 196, 143, 0.05);
+}
+
+.leaderboard-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
