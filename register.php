@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="form-group">
             <label for="password" class="form-label">Password</label>
 
-            <!-- password field wrapper makes room for the visibility icon -->
+            <!-- password field wrapper makes room for the in-box eye icon -->
             <div class="password-field">
               <input
                 type="password"
@@ -137,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="form-input password-input"
                 placeholder="Enter a password"
               >
+
               <button
                 type="button"
                 class="password-toggle"
@@ -144,7 +145,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 aria-label="Show password"
                 aria-pressed="false"
               >
-                👁
+                <svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+                  <circle cx="12" cy="12" r="3.2"/>
+                </svg>
+
+                <svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"/>
+                  <path d="M10.6 6.3A11.4 11.4 0 0 1 12 6c6.5 0 10 6 10 6a18.2 18.2 0 0 1-3.2 3.7"/>
+                  <path d="M6.7 6.7A18.6 18.6 0 0 0 2 12s3.5 6 10 6a10.8 10.8 0 0 0 5.3-1.3"/>
+                  <path d="M9.9 9.9A3 3 0 0 0 9 12a3 3 0 0 0 4.1 2.8"/>
+                </svg>
               </button>
             </div>
 
@@ -156,7 +167,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <div class="form-group">
             <label for="confirm_password" class="form-label">Confirm Password</label>
 
-            <!-- using the same toggle pattern here so the two password fields match -->
+            <!-- matching toggle style on the confirm password field too -->
             <div class="password-field">
               <input
                 type="password"
@@ -165,6 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 class="form-input password-input"
                 placeholder="Re-enter your password"
               >
+
               <button
                 type="button"
                 class="password-toggle"
@@ -172,7 +184,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 aria-label="Show password"
                 aria-pressed="false"
               >
-                👁
+                <svg class="eye-icon eye-open" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/>
+                  <circle cx="12" cy="12" r="3.2"/>
+                </svg>
+
+                <svg class="eye-icon eye-closed" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 3l18 18"/>
+                  <path d="M10.6 6.3A11.4 11.4 0 0 1 12 6c6.5 0 10 6 10 6a18.2 18.2 0 0 1-3.2 3.7"/>
+                  <path d="M6.7 6.7A18.6 18.6 0 0 0 2 12s3.5 6 10 6a10.8 10.8 0 0 0 5.3-1.3"/>
+                  <path d="M9.9 9.9A3 3 0 0 0 9 12a3 3 0 0 0 4.1 2.8"/>
+                </svg>
               </button>
             </div>
 
@@ -197,11 +219,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </div>
 
   <script>
-    // lets users toggle password visibility on both password fields
+    // toggles password visibility and swaps between eye open / eye closed icon states
     document.querySelectorAll('.password-toggle').forEach(button => {
       button.addEventListener('click', () => {
-        const targetId = button.getAttribute('data-target');
-        const input = document.getElementById(targetId);
+        const input = document.getElementById(button.dataset.target);
 
         if (!input) {
           return;
@@ -209,9 +230,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         const showing = input.type === 'text';
         input.type = showing ? 'password' : 'text';
+
+        button.classList.toggle('is-visible', !showing);
         button.setAttribute('aria-pressed', showing ? 'false' : 'true');
         button.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
-        button.textContent = showing ? '👁' : '🙈';
       });
     });
   </script>
