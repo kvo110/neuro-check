@@ -69,7 +69,7 @@ body::after {
   z-index: 0;
 }
 
-/* this layer holds the visible neural lightning flashes behind the content */
+/* this layer holds the neural lightning behind the content */
 body .neuro-lightning {
   position: fixed;
   inset: 0;
@@ -79,61 +79,71 @@ body .neuro-lightning {
   mix-blend-mode: screen;
 }
 
-/* each bolt is now brighter, wider, and taller so it actually reads on the page */
+/* the main bolt is thinner now and grows into view instead of just hard flashing */
 .neuro-bolt {
   position: absolute;
-  width: 5px;
-  height: 220px;
+  width: 2px;
+  height: 180px;
   opacity: 0;
-  transform: rotate(28deg) scaleY(0.35);
-  transform-origin: center;
+  transform: rotate(24deg) scaleY(0.05);
+  transform-origin: top center;
   border-radius: 999px;
   background: linear-gradient(to bottom,
-      transparent 0%,
-      rgba(0, 255, 170, 0.98) 20%,
-      rgba(142, 240, 203, 1) 45%,
-      rgba(255, 255, 255, 0.95) 52%,
-      rgba(0, 255, 170, 0.95) 72%,
-      transparent 100%);
+      rgba(255, 255, 255, 0) 0%,
+      rgba(170, 255, 230, 0.95) 18%,
+      rgba(0, 255, 170, 1) 45%,
+      rgba(255, 255, 255, 0.92) 52%,
+      rgba(0, 255, 170, 0.92) 72%,
+      rgba(255, 255, 255, 0) 100%);
   filter:
-    blur(0.8px) drop-shadow(0 0 10px rgba(0, 255, 170, 0.85)) drop-shadow(0 0 22px rgba(142, 240, 203, 0.55));
-  animation: neuroFlash 4.2s infinite ease-in-out;
+    blur(0.3px) drop-shadow(0 0 7px rgba(0, 255, 170, 0.65)) drop-shadow(0 0 14px rgba(142, 240, 203, 0.35));
+  animation: neuroFlash 5.2s infinite ease-out;
 }
 
-/* small branch pieces make the strike feel less like a plain line */
+/* the branch pieces help the strike feel more like neural activity than a straight line */
 .neuro-bolt::before,
 .neuro-bolt::after {
   content: "";
   position: absolute;
-  width: 4px;
-  height: 78px;
+  width: 2px;
+  height: 72px;
+  opacity: 0;
+  transform-origin: top center;
   border-radius: 999px;
   background: linear-gradient(to bottom,
-      transparent 0%,
-      rgba(142, 240, 203, 0.95) 35%,
-      rgba(255, 255, 255, 0.88) 50%,
-      rgba(0, 255, 170, 0.85) 70%,
-      transparent 100%);
+      rgba(255, 255, 255, 0) 0%,
+      rgba(142, 240, 203, 0.9) 28%,
+      rgba(0, 255, 170, 0.85) 60%,
+      rgba(255, 255, 255, 0) 100%);
   filter:
-    blur(0.6px) drop-shadow(0 0 8px rgba(0, 255, 170, 0.65));
+    blur(0.25px) drop-shadow(0 0 6px rgba(0, 255, 170, 0.45));
 }
 
+/* left branch grows a little after the main bolt starts */
 .neuro-bolt::before {
   top: 42px;
-  left: -16px;
-  transform: rotate(-34deg);
+  left: -12px;
+  transform: rotate(-30deg) scaleY(0.05);
+  animation: neuroBranchLeft 5.2s infinite ease-out;
 }
 
+/* right branch kicks in slightly later so the strike feels less uniform */
 .neuro-bolt::after {
-  top: 108px;
-  right: -16px;
-  transform: rotate(34deg);
+  top: 96px;
+  right: -12px;
+  transform: rotate(30deg) scaleY(0.05);
+  animation: neuroBranchRight 5.2s infinite ease-out;
 }
 
-/* spreading the bolts around the screen with different timings so it feels organic */
+/* spreading the strikes around the screen with staggered timing */
 .neuro-bolt:nth-child(1) {
   left: 14%;
   top: 10%;
+  animation-delay: 0s;
+}
+
+.neuro-bolt:nth-child(1)::before,
+.neuro-bolt:nth-child(1)::after {
   animation-delay: 0s;
 }
 
@@ -143,9 +153,19 @@ body .neuro-lightning {
   animation-delay: 1.2s;
 }
 
+.neuro-bolt:nth-child(2)::before,
+.neuro-bolt:nth-child(2)::after {
+  animation-delay: 1.2s;
+}
+
 .neuro-bolt:nth-child(3) {
   left: 34%;
   top: 63%;
+  animation-delay: 2.6s;
+}
+
+.neuro-bolt:nth-child(3)::before,
+.neuro-bolt:nth-child(3)::after {
   animation-delay: 2.6s;
 }
 
@@ -155,41 +175,100 @@ body .neuro-lightning {
   animation-delay: 3.5s;
 }
 
-/* this flicker makes the bolt hit hard for a moment, then disappear */
+.neuro-bolt:nth-child(4)::before,
+.neuro-bolt:nth-child(4)::after {
+  animation-delay: 3.5s;
+}
+
+/* the main strike grows downward while fading in, then fades away */
 @keyframes neuroFlash {
   0% {
     opacity: 0;
-    transform: rotate(28deg) scaleY(0.3);
+    transform: rotate(24deg) scaleY(0.05);
   }
 
-  4% {
-    opacity: 1;
-    transform: rotate(28deg) scaleY(1.12);
-  }
-
-  7% {
-    opacity: 0.35;
-  }
-
-  10% {
-    opacity: 1;
+  8% {
+    opacity: 0.15;
+    transform: rotate(24deg) scaleY(0.35);
   }
 
   14% {
-    opacity: 0.25;
+    opacity: 0.9;
+    transform: rotate(24deg) scaleY(1);
   }
 
   18% {
-    opacity: 0.92;
+    opacity: 0.45;
   }
 
-  24% {
+  22% {
+    opacity: 0.95;
+  }
+
+  28% {
     opacity: 0;
-    transform: rotate(28deg) scaleY(1.25);
+    transform: rotate(24deg) scaleY(1.08);
   }
 
   100% {
     opacity: 0;
+    transform: rotate(24deg) scaleY(0.05);
+  }
+}
+
+/* left branch comes in shortly after the main strike begins */
+@keyframes neuroBranchLeft {
+  0% {
+    opacity: 0;
+    transform: rotate(-30deg) scaleY(0.05);
+  }
+
+  10% {
+    opacity: 0;
+    transform: rotate(-30deg) scaleY(0.05);
+  }
+
+  16% {
+    opacity: 0.7;
+    transform: rotate(-30deg) scaleY(0.9);
+  }
+
+  24% {
+    opacity: 0;
+    transform: rotate(-30deg) scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(-30deg) scaleY(0.05);
+  }
+}
+
+/* right branch appears a little later so the bolt doesn't feel too symmetrical */
+@keyframes neuroBranchRight {
+  0% {
+    opacity: 0;
+    transform: rotate(30deg) scaleY(0.05);
+  }
+
+  13% {
+    opacity: 0;
+    transform: rotate(30deg) scaleY(0.05);
+  }
+
+  19% {
+    opacity: 0.65;
+    transform: rotate(30deg) scaleY(0.85);
+  }
+
+  26% {
+    opacity: 0;
+    transform: rotate(30deg) scaleY(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(30deg) scaleY(0.05);
   }
 }
 
