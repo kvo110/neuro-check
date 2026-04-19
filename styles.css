@@ -119,7 +119,7 @@ body .neuro-lightning {
     blur(0.25px) drop-shadow(0 0 6px rgba(0, 255, 170, 0.45));
 }
 
-/* left branch grows a little after the main bolt starts */
+/* left branch comes in shortly after the main strike begins */
 .neuro-bolt::before {
   top: 42px;
   left: -12px;
@@ -127,7 +127,7 @@ body .neuro-lightning {
   animation: neuroBranchLeft 5.2s infinite ease-out;
 }
 
-/* right branch kicks in slightly later so the strike feels less uniform */
+/* right branch appears a little later so the bolt doesn't feel too symmetrical */
 .neuro-bolt::after {
   top: 96px;
   right: -12px;
@@ -387,11 +387,16 @@ a {
 
 /* Card styling used throughout the app */
 .glow-card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  background:
+    linear-gradient(180deg, rgba(19, 33, 28, 0.96) 0%, rgba(24, 41, 35, 0.94) 100%);
+  border: 1px solid rgba(40, 196, 143, 0.14);
+  border-radius: 24px;
   padding: 32px;
-  box-shadow: 0 14px 34px var(--shadow);
+  box-shadow:
+    0 14px 34px var(--shadow),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+    0 0 28px rgba(40, 196, 143, 0.05);
+  backdrop-filter: blur(10px);
 }
 
 .hero-title {
@@ -420,8 +425,9 @@ a {
 
 /* Primary button (main action) */
 .btn-primary {
-  background: var(--jade);
+  background: linear-gradient(135deg, var(--jade), #39d69f);
   color: #08110e;
+  box-shadow: 0 10px 24px rgba(40, 196, 143, 0.2);
 }
 
 /* Secondary button (outline style) */
@@ -446,9 +452,9 @@ a {
 }
 
 .mini-panel {
-  background: var(--panel-2);
+  background: rgba(24, 41, 35, 0.9);
   padding: 16px 18px;
-  border-radius: 14px;
+  border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
@@ -487,12 +493,26 @@ a {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding-top: 24px;
+  padding-top: 32px;
 }
 
 /* auth card keeps forms in one clean panel */
 .auth-card {
-  width: min(560px, 100%);
+  width: min(580px, 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle top glow on the auth card helps the form stand out against the busy background */
+.auth-card::before {
+  content: "";
+  position: absolute;
+  top: -80px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(40, 196, 143, 0.18) 0%, transparent 68%);
+  pointer-events: none;
 }
 
 .auth-title {
@@ -505,7 +525,9 @@ a {
 
 .auth-form {
   display: grid;
-  gap: 16px;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
 }
 
 .form-group {
@@ -517,23 +539,93 @@ a {
 .form-label {
   font-weight: 700;
   color: var(--text);
+  letter-spacing: 0.2px;
 }
 
-/* input style stays in the same dark jade theme */
+/* input style stays in the same dark jade theme, but now looks more premium */
 .form-input {
   width: 100%;
-  padding: 13px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: #0e1714;
+  padding: 14px 15px;
+  border-radius: 14px;
+  border: 1px solid rgba(40, 196, 143, 0.16);
+  background: rgba(14, 23, 20, 0.92);
   color: var(--text);
   font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-input::placeholder {
+  color: rgba(158, 199, 183, 0.72);
 }
 
 .form-input:focus {
   outline: none;
   border-color: var(--jade);
-  box-shadow: 0 0 0 3px rgba(40, 196, 143, 0.14);
+  background: rgba(13, 25, 21, 0.98);
+  box-shadow:
+    0 0 0 3px rgba(40, 196, 143, 0.14),
+    0 0 18px rgba(40, 196, 143, 0.08);
+}
+
+/* wrapper for password inputs so the toggle icon can sit inside the box */
+.password-field {
+  position: relative;
+}
+
+/* extra room on the right so typed text doesn't run into the icon */
+.password-input {
+  padding-right: 54px;
+}
+
+/* the toggle button sits inside the input area and looks more like a real app control */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+  transition: 0.2s ease;
+}
+
+/* soft hover/focus treatment so it feels clickable without looking noisy */
+.password-toggle:hover,
+.password-toggle:focus {
+  color: var(--text);
+  background: rgba(40, 196, 143, 0.08);
+  outline: none;
+}
+
+/* svg icons look cleaner than emoji and match modern app patterns better */
+.eye-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* only show one icon state at a time */
+.eye-closed {
+  display: none;
+}
+
+.password-toggle.is-visible .eye-open {
+  display: none;
+}
+
+.password-toggle.is-visible .eye-closed {
+  display: block;
 }
 
 /* validation message under each field */
@@ -565,16 +657,19 @@ a {
 
 /* keep auth buttons looking full and centered inside the form */
 .auth-button {
-  margin-top: 4px;
+  margin-top: 6px;
   border: none;
   cursor: pointer;
   width: 100%;
   justify-content: center;
+  min-height: 48px;
 }
 
 .auth-switch {
-  margin-top: 18px;
+  margin-top: 20px;
   color: var(--muted);
+  position: relative;
+  z-index: 1;
 }
 
 .inline-link {
@@ -938,65 +1033,4 @@ a {
     opacity: 1;
     transform: scale(1.04);
   }
-}
-
-/* wrapper for password inputs so the toggle icon can sit inside the box */
-.password-field {
-  position: relative;
-}
-
-/* extra room on the right so typed text doesn't run into the icon */
-.password-input {
-  padding-right: 54px;
-}
-
-/* the toggle button sits inside the input area and looks more like a real app control */
-.password-toggle {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 34px;
-  height: 34px;
-  display: grid;
-  place-items: center;
-  border: none;
-  border-radius: 10px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-  padding: 0;
-  transition: 0.2s ease;
-}
-
-/* soft hover/focus treatment so it feels clickable without looking noisy */
-.password-toggle:hover,
-.password-toggle:focus {
-  color: var(--text);
-  background: rgba(40, 196, 143, 0.08);
-  outline: none;
-}
-
-/* svg icons look cleaner than emoji and match modern app patterns better */
-.eye-icon {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 1.9;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* only show one icon state at a time */
-.eye-closed {
-  display: none;
-}
-
-.password-toggle.is-visible .eye-open {
-  display: none;
-}
-
-.password-toggle.is-visible .eye-closed {
-  display: block;
 }
