@@ -1,11 +1,19 @@
 <?php
-require_once __DIR__ . '/includes/quiz_data.php';
+// load session + shared helpers first
+require_once __DIR__ . '/includes/bootstrap.php';
+
+// quiz should only be available after login
 requireLogin();
 
-// loading the questions from the helper file
-$questions = getQuizQuestions();
+// pulling in the quiz question helper file
+require_once __DIR__ . '/includes/quiz_data.php';
 
-// if the session values aren't there yet, set them up now
+// actually load the questions from the helper function
+$questions = getQuizQuestions();
+$totalQuestions = count($questions);
+$errors = [];
+
+// set up default session values if they don't exist yet
 if (!isset($_SESSION['score'])) {
   $_SESSION['score'] = 0;
 }
@@ -18,12 +26,10 @@ if (!isset($_SESSION['answers'])) {
   $_SESSION['answers'] = [];
 }
 
+// current question position in the quiz
 $currentIndex = (int) $_SESSION['question_index'];
-$totalQuestions = count($questions);
-$errors = [];
 
-// if somehow the quiz index already passed the question count,
-// just send the user to the results page
+// if the quiz was already completed somehow, send user to results
 if ($currentIndex >= $totalQuestions) {
   header('Location: result.php');
   exit;
@@ -31,16 +37,17 @@ if ($currentIndex >= $totalQuestions) {
 
 // handle answer submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $selectedAnswer = trim((string) ($_POST['answer'] ?? ''));
+  // choice comes in as the selected answer text
+  $selectedAnswer = trim((string) ($_POST['choice'] ?? ''));
 
   if ($selectedAnswer === '') {
-    $errors['answer'] = 'Please choose an answer before continuing.';
+    $errors['choice'] = 'Please choose an answer before continuing.';
   } else {
     $currentQuestion = $questions[$currentIndex];
     $correctAnswer = $currentQuestion['answer'];
     $isCorrect = $selectedAnswer === $correctAnswer;
 
-    // saving each answered question so the result page can show a summary later
+    // storing full answer details so the result page can review everything later
     $_SESSION['answers'][] = [
       'question' => $currentQuestion['question'],
       'selected' => $selectedAnswer,
@@ -53,24 +60,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $_SESSION['score'] += 10;
     }
 
-    // move to the next question
+    // move to next question
     $_SESSION['question_index']++;
 
-    // if quiz is done, go to results
+    // once all questions are done, go to result page
     if ($_SESSION['question_index'] >= $totalQuestions) {
       header('Location: result.php');
       exit;
     }
 
-    // otherwise just reload quiz.php for the next question
+    // reload quiz page so the next question shows up cleanly
     header('Location: quiz.php');
     exit;
   }
 }
 
+// refresh current values after any possible updates
 $currentIndex = (int) $_SESSION['question_index'];
 $currentQuestion = $questions[$currentIndex];
 $questionNumber = $currentIndex + 1;
+$progressPercent = (int) round(($questionNumber / $totalQuestions) * 100);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -105,6 +114,17 @@ $questionNumber = $currentIndex + 1;
         <p class="eyebrow">Question <?php echo $questionNumber; ?> of <?php echo $totalQuestions; ?></p>
         <h2 class="hero-title quiz-title"><?php echo e($currentQuestion['question']); ?></h2>
 
+        <!-- little progress bar so the quiz feels more complete -->
+        <div class="progress-block">
+          <div class="progress-label-row">
+            <span>Quiz Progress</span>
+            <span><?php echo $progressPercent; ?>%</span>
+          </div>
+          <div class="progress-bar-shell">
+            <div class="progress-bar-fill" style="width: <?php echo $progressPercent; ?>%;"></div>
+          </div>
+        </div>
+
         <div class="quiz-top-row">
           <div class="mini-panel">
             <span class="mini-label">Current Score</span>
@@ -117,9 +137,9 @@ $questionNumber = $currentIndex + 1;
           </div>
         </div>
 
-        <?php if (!empty($errors['answer'])): ?>
+        <?php if (!empty($errors['choice'])): ?>
           <div class="message-box error-box">
-            <?php echo e($errors['answer']); ?>
+            <?php echo e($errors['choice']); ?>
           </div>
         <?php endif; ?>
 
@@ -129,7 +149,7 @@ $questionNumber = $currentIndex + 1;
               <label class="choice-card">
                 <input
                   type="radio"
-                  name="answer"
+                  name="choice"
                   value="<?php echo e($choice); ?>"
                   class="choice-input"
                 >
@@ -142,6 +162,10 @@ $questionNumber = $currentIndex + 1;
         </form>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>NeuroCheck • CSC 4370 • Spring 2026</p>
+    </footer>
   </div>
 
 </body>

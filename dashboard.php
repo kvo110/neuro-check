@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
-
-// dashboard should only be visible after login
 requireLogin();
 
 // setting defaults here so the dashboard doesn't break
@@ -17,6 +15,8 @@ if (!isset($_SESSION['question_index'])) {
 if (!isset($_SESSION['answers'])) {
   $_SESSION['answers'] = [];
 }
+
+$questionsAnswered = count($_SESSION['answers']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,16 +57,14 @@ if (!isset($_SESSION['answers'])) {
         </h2>
 
         <p class="hero-text">
-          Your account is active and the system is ready. From here, you’ll be able
-          to start the quiz, track your progress, and view your score as the project grows.
+          Your account is active and the system is ready. From here, you can start the quiz,
+          view your saved score progress, and check where you rank on the leaderboard.
         </p>
 
         <div class="dashboard-actions">
-          <!-- this is the main next step once the quiz page is added -->
           <a href="quiz.php" class="btn btn-primary">Start Quiz</a>
-
-          <!-- keeping leaderboard link here so nav flow stays consistent -->
           <a href="leaderboard.php" class="btn btn-secondary">View Leaderboard</a>
+          <a href="restart.php" class="btn btn-secondary">Try Again</a>
         </div>
       </section>
 
@@ -92,12 +90,21 @@ if (!isset($_SESSION['answers'])) {
 
           <div class="mini-panel">
             <span class="mini-label">Answers Saved</span>
-            <span class="mini-value"><?php echo count($_SESSION['answers']); ?></span>
+            <span class="mini-value"><?php echo $questionsAnswered; ?></span>
           </div>
+        </div>
+
+        <div class="callout-box">
+          If you want a clean attempt before recording your demo, use the reset button first
+          so the quiz starts from question one again.
         </div>
       </aside>
 
     </main>
+
+    <footer class="site-footer">
+      <p>NeuroCheck • CSC 4370 • Spring 2026</p>
+    </footer>
   </div>
 
 </body>
