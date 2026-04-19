@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/includes/user_data.php';
 
-// if somebody is already logged in, no reason to register again
+// if somebody is already logged in, no reason to stay on register
 if (isset($_SESSION['user'])) {
   header('Location: dashboard.php');
   exit;
@@ -12,12 +12,12 @@ $errors = [];
 $successMessage = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  // grabbing the form values and trimming extra spaces
-  $username = trim((string) filter_input(INPUT_POST, 'username', FILTER_UNSAFE_RAW));
-  $password = (string) filter_input(INPUT_POST, 'password', FILTER_UNSAFE_RAW);
-  $confirmPassword = (string) filter_input(INPUT_POST, 'confirm_password', FILTER_UNSAFE_RAW);
+  // grabbing form values and trimming the username
+  $username = trim((string) ($_POST['username'] ?? ''));
+  $password = (string) ($_POST['password'] ?? '');
+  $confirmPassword = (string) ($_POST['confirm_password'] ?? '');
 
-  // basic username checks
+  // username checks
   if ($username === '') {
     $errors['username'] = 'Please enter a username.';
   } elseif (strlen($username) < 3) {
@@ -35,14 +35,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors['password'] = 'Password must be at least 6 characters long.';
   }
 
-  // confirm password check
+  // confirm password checks
   if ($confirmPassword === '') {
     $errors['confirm_password'] = 'Please confirm your password.';
   } elseif ($password !== '' && $password !== $confirmPassword) {
     $errors['confirm_password'] = 'Passwords do not match.';
   }
 
-  // if there are no errors, save the new user
+  // if everything looks good, save the account
   if (empty($errors)) {
     if (createUser($username, $password)) {
       $successMessage = 'Account created successfully. You can log in now.';
@@ -62,13 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
   <div class="page-shell">
     <header class="site-header">
       <div class="brand-wrap">
         <div class="brand-badge">NC</div>
         <div>
           <h1 class="site-title">NeuroCheck</h1>
-          <p class="site-subtitle">Create your account to enter the system</p>
+          <p class="site-subtitle">Create your account</p>
         </div>
       </div>
 
@@ -154,5 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </section>
     </main>
   </div>
+
 </body>
 </html>

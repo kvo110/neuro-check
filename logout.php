@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
 
-// clearing everything out so the user is fully logged out
+// clearing session data out fully
 $_SESSION = [];
 
-// if the session cookie exists, remove it too
+// remove session cookie too just to keep logout clean
 if (ini_get('session.use_cookies')) {
   $params = session_get_cookie_params();
 
@@ -19,7 +19,6 @@ if (ini_get('session.use_cookies')) {
   );
 }
 
-// end the session and go back home
 session_destroy();
 
 header('Location: index.php');

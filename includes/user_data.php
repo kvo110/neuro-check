@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
-// keeping the user file path here so register and login both use the same source
+// keeping the user file path in one place so both register and login use it
 const USER_DATA_FILE = __DIR__ . '/../data/users.json';
 
 // read all users from the json file
@@ -32,7 +32,7 @@ function saveUsers(array $users): bool {
   return file_put_contents(USER_DATA_FILE, $json) !== false;
 }
 
-// see if a username already exists
+// check if a username is already taken
 function usernameExists(string $username): bool {
   $users = loadUsers();
 
@@ -48,20 +48,20 @@ function usernameExists(string $username): bool {
   return false;
 }
 
-// add a new user to the json file
+// add a new user to the file
 function createUser(string $username, string $password): bool {
   $users = loadUsers();
 
   $users[] = [
     'username' => $username,
-    // hashing this now makes login safer later too
+    // hashing the password now so login is safer later too
     'password' => password_hash($password, PASSWORD_DEFAULT)
   ];
 
   return saveUsers($users);
 }
 
-// find a user record by username
+// find one user by username
 function findUserByUsername(string $username): ?array {
   $users = loadUsers();
 
@@ -77,7 +77,7 @@ function findUserByUsername(string $username): ?array {
   return null;
 }
 
-// check if the provided password matches the saved hash
+// compare login password against the saved hash
 function verifyUserCredentials(string $username, string $password): bool {
   $user = findUserByUsername($username);
 

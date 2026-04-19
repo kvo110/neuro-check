@@ -1,9 +1,7 @@
 <?php
-// dashboard is a protected page, so guests should not be able to open it
 require_once __DIR__ . '/includes/bootstrap.php';
 requireLogin();
 
-// setting defaults here just in case these were not created yet
 if (!isset($_SESSION['score'])) {
   $_SESSION['score'] = 0;
 }
@@ -27,7 +25,6 @@ if (!isset($_SESSION['answers'])) {
 <body>
 
   <div class="page-shell">
-
     <header class="site-header">
       <div class="brand-wrap">
         <div class="brand-badge">NC</div>
@@ -46,7 +43,6 @@ if (!isset($_SESSION['answers'])) {
     </header>
 
     <main class="dashboard-grid">
-
       <section class="glow-card dashboard-card">
         <p class="eyebrow">Welcome Back</p>
         <h2 class="hero-title dashboard-title">
@@ -59,7 +55,6 @@ if (!isset($_SESSION['answers'])) {
         </p>
 
         <div class="dashboard-actions">
-          <!-- quiz.php does not exist yet, but this keeps our flow ready -->
           <a href="quiz.php" class="btn btn-primary">Start Quiz</a>
           <a href="leaderboard.php" class="btn btn-secondary">View Leaderboard</a>
         </div>
@@ -89,15 +84,8 @@ if (!isset($_SESSION['answers'])) {
             <span class="mini-value"><?php echo count($_SESSION['answers']); ?></span>
           </div>
         </div>
-
-        <div class="callout-box">
-          This page is protected with a session check, so guests should get sent back
-          to the login page instead of seeing this content.
-        </div>
       </aside>
-
     </main>
-
   </div>
 
 </body>
