@@ -61,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-  <!-- subtle neural lightning layer for the site background -->
-  <div class="neuro-lightning" aria-hidden="true">
+  <!-- background layer for the animated neuro lightning effect -->
+  <div class="neuro-lightning">
     <div class="neuro-bolt"></div>
     <div class="neuro-bolt"></div>
     <div class="neuro-bolt"></div>
@@ -119,13 +119,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-group">
             <label for="password" class="form-label">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-input"
-              placeholder="Enter your password"
-            >
+
+            <!-- wrapping the password field so the eye button can sit inside neatly -->
+            <div class="password-field">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input password-input"
+                placeholder="Enter your password"
+              >
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="password"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                👁
+              </button>
+            </div>
+
             <?php if (!empty($errors['password'])): ?>
               <p class="form-error"><?php echo e($errors['password']); ?></p>
             <?php endif; ?>
@@ -140,7 +154,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </p>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>NeuroCheck • CSC 4370 • Spring 2026</p>
+    </footer>
   </div>
+
+  <script>
+    // lets users quickly view or hide the password without retyping it
+    document.querySelectorAll('.password-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+
+        if (!input) {
+          return;
+        }
+
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        button.setAttribute('aria-pressed', showing ? 'false' : 'true');
+        button.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        button.textContent = showing ? '👁' : '🙈';
+      });
+    });
+  </script>
 
 </body>
 </html>

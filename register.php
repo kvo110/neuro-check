@@ -63,8 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-  <!-- subtle neural lightning layer for the site background -->
-  <div class="neuro-lightning" aria-hidden="true">
+  <!-- background layer for the animated neuro lightning effect -->
+  <div class="neuro-lightning">
     <div class="neuro-bolt"></div>
     <div class="neuro-bolt"></div>
     <div class="neuro-bolt"></div>
@@ -127,13 +127,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-group">
             <label for="password" class="form-label">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              class="form-input"
-              placeholder="Enter a password"
-            >
+
+            <!-- password field wrapper makes room for the visibility icon -->
+            <div class="password-field">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                class="form-input password-input"
+                placeholder="Enter a password"
+              >
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="password"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                👁
+              </button>
+            </div>
+
             <?php if (!empty($errors['password'])): ?>
               <p class="form-error"><?php echo e($errors['password']); ?></p>
             <?php endif; ?>
@@ -141,13 +155,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
           <div class="form-group">
             <label for="confirm_password" class="form-label">Confirm Password</label>
-            <input
-              type="password"
-              id="confirm_password"
-              name="confirm_password"
-              class="form-input"
-              placeholder="Re-enter your password"
-            >
+
+            <!-- using the same toggle pattern here so the two password fields match -->
+            <div class="password-field">
+              <input
+                type="password"
+                id="confirm_password"
+                name="confirm_password"
+                class="form-input password-input"
+                placeholder="Re-enter your password"
+              >
+              <button
+                type="button"
+                class="password-toggle"
+                data-target="confirm_password"
+                aria-label="Show password"
+                aria-pressed="false"
+              >
+                👁
+              </button>
+            </div>
+
             <?php if (!empty($errors['confirm_password'])): ?>
               <p class="form-error"><?php echo e($errors['confirm_password']); ?></p>
             <?php endif; ?>
@@ -162,7 +190,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </p>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>NeuroCheck • CSC 4370 • Spring 2026</p>
+    </footer>
   </div>
+
+  <script>
+    // lets users toggle password visibility on both password fields
+    document.querySelectorAll('.password-toggle').forEach(button => {
+      button.addEventListener('click', () => {
+        const targetId = button.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+
+        if (!input) {
+          return;
+        }
+
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        button.setAttribute('aria-pressed', showing ? 'false' : 'true');
+        button.setAttribute('aria-label', showing ? 'Show password' : 'Hide password');
+        button.textContent = showing ? '👁' : '🙈';
+      });
+    });
+  </script>
 
 </body>
 </html>

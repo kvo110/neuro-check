@@ -939,3 +939,38 @@ a {
     transform: scale(1.04);
   }
 }
+
+/* wrapper for password inputs so the eye icon can sit inside the field area */
+.password-field {
+  position: relative;
+}
+
+/* giving password inputs a little extra right padding so text doesn't run under the icon */
+.password-input {
+  padding-right: 52px;
+}
+
+/* the eye button sits inside the input area on the right side */
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  color: var(--jade-soft);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 8px;
+  transition: 0.2s ease;
+}
+
+/* little hover/focus effect so the icon feels interactive */
+.password-toggle:hover,
+.password-toggle:focus {
+  color: var(--text);
+  background: rgba(40, 196, 143, 0.08);
+  outline: none;
+}
