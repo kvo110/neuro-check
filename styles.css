@@ -371,3 +371,9 @@ a {
     width: 100%;
   }
 }
+
+/* keep auth buttons looking full and centered inside the form */
+.auth-button {
+  width: 100%;
+  justify-content: center;
+}

@@ -1,9 +1,7 @@
 <?php
 require_once __DIR__ . '/bootstrap.php';
 
-// using one file for user data helpers so register/login pages
-// don't get messy later when auth logic grows
-
+// keeping the user file path here so register and login both use the same source
 const USER_DATA_FILE = __DIR__ . '/../data/users.json';
 
 // read all users from the json file
@@ -56,9 +54,36 @@ function createUser(string $username, string $password): bool {
 
   $users[] = [
     'username' => $username,
-    // hashing password now so login is safer later too
+    // hashing this now makes login safer later too
     'password' => password_hash($password, PASSWORD_DEFAULT)
   ];
 
   return saveUsers($users);
+}
+
+// find a user record by username
+function findUserByUsername(string $username): ?array {
+  $users = loadUsers();
+
+  foreach ($users as $user) {
+    if (
+      isset($user['username']) &&
+      strtolower($user['username']) === strtolower($username)
+    ) {
+      return $user;
+    }
+  }
+
+  return null;
+}
+
+// check if the provided password matches the saved hash
+function verifyUserCredentials(string $username, string $password): bool {
+  $user = findUserByUsername($username);
+
+  if ($user === null || !isset($user['password'])) {
+    return false;
+  }
+
+  return password_verify($password, $user['password']);
 }
