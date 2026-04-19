@@ -1,12 +1,18 @@
 <?php
-// Start session if it hasn't already started
-// This allows us to store user data across pages (login, score, etc.)
+// start session once here so every page can safely use session data
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
 
-// Helper function to safely display user input
-// Prevents XSS attacks by escaping special characters
+// small helper for safe output in html
 function e(string $value): string {
   return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+// use this on pages that should only be visible after login
+function requireLogin(): void {
+  if (!isset($_SESSION['user']) || $_SESSION['user'] === '') {
+    header('Location: login.php');
+    exit;
+  }
 }
