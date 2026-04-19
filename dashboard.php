@@ -1,7 +1,11 @@
 <?php
 require_once __DIR__ . '/includes/bootstrap.php';
+
+// dashboard should only be visible after login
 requireLogin();
 
+// setting defaults here so the dashboard doesn't break
+// if the quiz hasn't been started yet
 if (!isset($_SESSION['score'])) {
   $_SESSION['score'] = 0;
 }
@@ -43,8 +47,11 @@ if (!isset($_SESSION['answers'])) {
     </header>
 
     <main class="dashboard-grid">
+
+      <!-- left side is the main welcome area -->
       <section class="glow-card dashboard-card">
         <p class="eyebrow">Welcome Back</p>
+
         <h2 class="hero-title dashboard-title">
           Hello, <?php echo e($_SESSION['user']); ?>
         </h2>
@@ -55,11 +62,15 @@ if (!isset($_SESSION['answers'])) {
         </p>
 
         <div class="dashboard-actions">
+          <!-- this is the main next step once the quiz page is added -->
           <a href="quiz.php" class="btn btn-primary">Start Quiz</a>
+
+          <!-- keeping leaderboard link here so nav flow stays consistent -->
           <a href="leaderboard.php" class="btn btn-secondary">View Leaderboard</a>
         </div>
       </section>
 
+      <!-- right side shows quick session info -->
       <aside class="glow-card dashboard-side-card">
         <h3 class="info-title">Current Session</h3>
 
@@ -85,6 +96,7 @@ if (!isset($_SESSION['answers'])) {
           </div>
         </div>
       </aside>
+
     </main>
   </div>
 

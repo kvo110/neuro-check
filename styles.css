@@ -584,3 +584,148 @@ a {
     align-items: stretch;
   }
 }
+
+/* quiz page layout */
+.quiz-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 18px;
+}
+
+.quiz-card {
+  width: min(760px, 100%);
+}
+
+.quiz-title {
+  margin-bottom: 22px;
+}
+
+/* top summary row for quiz progress */
+.quiz-top-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.quiz-form {
+  display: grid;
+  gap: 20px;
+}
+
+/* answer choices are shown as stacked cards */
+.choice-list {
+  display: grid;
+  gap: 14px;
+}
+
+.choice-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.choice-card:hover {
+  border-color: var(--jade);
+  box-shadow: 0 0 0 1px rgba(40, 196, 143, 0.16);
+}
+
+.choice-input {
+  accent-color: var(--jade);
+  transform: scale(1.1);
+}
+
+.choice-text {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.quiz-button {
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  justify-content: center;
+}
+
+/* results page layout */
+.result-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 18px;
+}
+
+.result-card {
+  width: min(840px, 100%);
+}
+
+.result-title {
+  margin-bottom: 20px;
+}
+
+.result-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* answer review section after quiz completion */
+.answer-review {
+  display: grid;
+  gap: 16px;
+}
+
+.review-card {
+  padding: 18px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.review-correct {
+  border-color: rgba(40, 196, 143, 0.35);
+}
+
+.review-wrong {
+  border-color: rgba(255, 123, 123, 0.3);
+}
+
+.review-question {
+  margin: 0 0 10px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.review-line {
+  margin: 6px 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.result-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+}
+
+@media (max-width: 640px) {
+
+  .quiz-top-row,
+  .result-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .result-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
